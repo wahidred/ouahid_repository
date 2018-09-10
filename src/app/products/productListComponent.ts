@@ -62,8 +62,12 @@ export class productListComponent implements OnInit{
     this.showImage = !this.showImage;
   }
 
-  performFilter(value :string) : IProduct[]{
+  performFilter(value: string): IProduct[]{
     value = value.toLocaleUpperCase();
-   return this.products.filter((toto : IProduct) => toto.productName.toLocaleUpperCase().indexOf(value) !== -1);
+   return this.products.filter((toto: IProduct) => toto.productName.toLocaleUpperCase().indexOf(value) !== -1);
+  }
+
+  onNotify(message: string): void{
+    this.pageTitle = message;
   }
 }
