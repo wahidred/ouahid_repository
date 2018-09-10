@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { IProduct } from "./product";
+import { ProductService } from "./product.service";
 
 @Component({
     selector : 'pm-products',
@@ -10,15 +11,15 @@ import { IProduct } from "./product";
 
 
 export class productListComponent implements OnInit{
-  ngOnInit(): void {
-   console.log('mon objet est passe par on init interface');
-  }
+ 
 
  pageTitle = "OUAHID";    
   imageWidth = 50;
   imageMargin = 2;
   showImage :boolean = false;
-  
+  filteredProducts: IProduct[];
+  products : IProduct[] = [ ];
+
   private _listFilter: string;
 
   public get listFilter(): string {
@@ -29,34 +30,14 @@ export class productListComponent implements OnInit{
     this.filteredProducts = value ? this.performFilter(value) : this.products;
   }
 
-  filteredProducts: IProduct[];
-  products : IProduct[] = [ 
-    {
-        "productId": 2,
-        "productName": "Garden Cart",
-        "productCode": "GDN-0023",
-        "releaseDate": "March 18, 2016",
-        "description": "15 gallon capacity rolling garden cart",
-        "price": 32.99,
-        "starRating": 2,
-        "imageUrl": "https://openclipart.org/image/300px/svg_to_png/58471/garden_cart.png"
-      },
-      {
-        "productId": 5,
-        "productName": "Hammer",
-        "productCode": "TBX-0048",
-        "releaseDate": "May 21, 2016",
-        "description": "Curved claw steel hammer",
-        "price": 8.9,
-        "starRating": 4.8,
-        "imageUrl": "https://openclipart.org/image/300px/svg_to_png/73/rejon_Hammer.png"
-      }
+  
+   
 
-  ];
+  
 
-  constructor(){
-    this.filteredProducts = this.products;
-    this._listFilter = 'cart' ;
+  constructor(private productService : ProductService){
+   
+    //this._listFilter = 'cart' ;
   }
   toogleImage(): void{
     this.showImage = !this.showImage;
@@ -70,4 +51,9 @@ export class productListComponent implements OnInit{
   onNotify(message: string): void{
     this.pageTitle = message;
   }
+
+  ngOnInit(): void {
+    this.products = this.productService.getProducts();
+    this.filteredProducts = this.products;
+   }
 }
