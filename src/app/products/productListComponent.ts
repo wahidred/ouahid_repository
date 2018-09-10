@@ -37,7 +37,6 @@ export class productListComponent implements OnInit{
 
   constructor(private productService : ProductService){
    
-    //this._listFilter = 'cart' ;
   }
   toogleImage(): void{
     this.showImage = !this.showImage;
