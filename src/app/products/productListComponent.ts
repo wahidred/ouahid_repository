@@ -1,6 +1,8 @@
-import { Component, OnInit } from "@angular/core";
-import { IProduct } from "./product";
+import { Component, OnInit, EventEmitter } from "@angular/core";
+import { IProduct } from "./IProduct";
 import { ProductService } from "./product.service";
+import { Observable } from "rxjs";
+
 
 @Component({
     selector : 'pm-products',
@@ -17,10 +19,10 @@ export class productListComponent implements OnInit{
   imageWidth = 50;
   imageMargin = 2;
   showImage :boolean = false;
-  filteredProducts: IProduct[];
-  products : IProduct[] = [ ];
-
   private _listFilter: string;
+  errorMessage : string;
+  constructor(private _productService: ProductService){
+  }
 
   public get listFilter(): string {
     return this._listFilter;
@@ -30,29 +32,30 @@ export class productListComponent implements OnInit{
     this.filteredProducts = value ? this.performFilter(value) : this.products;
   }
 
-  
-   
+  filteredProducts: IProduct[];
+  products : IProduct[] = [];
+  observableProduct: Observable<IProduct[]>=new Observable<IProduct[]>();
 
-  
-
-  constructor(private productService : ProductService){
-   
-  }
   toogleImage(): void{
     this.showImage = !this.showImage;
   }
 
-  performFilter(value: string): IProduct[]{
+  performFilter(value :string) : IProduct[]{
     value = value.toLocaleUpperCase();
-   return this.products.filter((toto: IProduct) => toto.productName.toLocaleUpperCase().indexOf(value) !== -1);
+   return this.products.filter((toto : IProduct) =>
+    toto.productName.toLocaleUpperCase().indexOf(value) !== -1);
   }
-
-  onNotify(message: string): void{
+  onNotify(message : string ) : void{
     this.pageTitle = message;
   }
 
   ngOnInit(): void {
-    this.products = this.productService.getProducts();
-    this.filteredProducts = this.products;
+    this._productService.getProducts().
+    subscribe(x => {
+      this.products = x;
+      this.filteredProducts = this.products;
+    }
+      , error => this.errorMessage = <any>error);
+    
    }
 }

@@ -8,7 +8,7 @@ export class ConvertToSpacePipe implements PipeTransform {
     
     
     transform(value: string, character: string ) :string{
-        return value.replace('-', ' ') ;
+        return value.replace(character, ' ') ;
     }
 
 }

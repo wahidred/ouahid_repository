@@ -4,7 +4,8 @@ import {FormsModule} from '@angular/forms'
 import { AppComponent } from './app.component';
 import { productListComponent } from './products/productListComponent';
 import { ConvertToSpacePipe } from './shared/convert-to-spaces-pipe';
-import { StartComponent } from './shared/start.component';
+import { StarComponent } from './shared/star.component';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -12,11 +13,13 @@ import { StartComponent } from './shared/start.component';
     AppComponent,
     productListComponent,
     ConvertToSpacePipe,
-    StartComponent
+    StarComponent
+   
   ],
   imports: [
     BrowserModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
    
   ],
   bootstrap: [AppComponent]
